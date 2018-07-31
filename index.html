@@ -3,25 +3,29 @@
     <head>
       <meta charset="utf-8">
       <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+      <link rel="stylesheet" href="/styles.css">
     </head>
     <body>
-      <div class="d-flex p-2 bd-highlight">
-        <div class="content mx-auto">
+      <div class="container">
+        <section class="section_main">
           <h2 align="center">Home Lightz</h2>
-          <form id="form" id="chat_form" class="mx-auto" style="width:320px;">
-            <div class="input-group mb-3">
-              <input type="text" class="form-control" id="chat_input"placeholder="Enter command code" aria-label="Recipient's username" aria-describedby="button-addon2">
-              <div class="input-group-append">
-                <button class="btn btn-outline-secondary" type="submit" value="Send" id="button-addon2">Button</button>
+          <div id="color-picker-container" class="center-h"></div>
+          <form id="chat_form" class="center-h">
+              <div class="field has-addons">
+                <div class="control wide">
+                    <input class="input" id="chat_input" type="text" placeholder="Enter command code">
+                </div>
+                <div class="control">
+                  <button class="button is-info" type="submit">
+                    Submit
+                  </button>
+                </div>
               </div>
-            </div>
-          </form>
-
-          <div id="color-picker-container" class="mx-auto" style="width:320px;"></div>
+            </form>
           <ul class="list-group list-group-flush" id="future">
 
           </ul>
-        </div>
+        </section>
       </div>
 
       <script src="/bundle.js"></script>

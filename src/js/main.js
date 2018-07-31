@@ -17,8 +17,8 @@ $('form').submit(function(e){
 });
 
 var demoColorPicker = new iro.ColorPicker("#color-picker-container", {
-  width: 320,
-  height: 320,
+  width: 480,
+  height: 480,
   color: {r: 255, g: 0, b: 0},
   markerRadius: 8,
   padding: 4,

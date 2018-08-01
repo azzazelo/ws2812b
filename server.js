@@ -1,33 +1,47 @@
-var express = require('express');
-var app = express();
-var server = require('http').createServer(app);
-var io = require('socket.io')(server);
+var express = require('express')
+var app = express()
+var server = require('http').createServer(app)
+var io = require('socket.io')(server)
+var path = require('path')
+var pixel = require('node-pixel')
+var five = require('johnny-five')
 
-app.use(express.static(__dirname + '/node_modules'));
+var board = new five.Board()
 
-app.use(express.static(__dirname + '/dist'));
+board.on('ready', function () {
+  let strip = new pixel.Strip({
+    board: this,
+    controller: 'FIRMATA',
+    strips: [ {pin: 6, length: 120} ], // this is preferred form for definition
+    gamma: 2.8 // set to a gamma that works nicely for WS2812
+  })
 
-app.get('/', function(req, res,next) {
-    res.sendFile(__dirname + '/index.html');
-});
+  strip.on('ready', function () {
+    io.on('connection', function (client) {
+      console.log('Client connected...')
+      client.on('join', function (data) {
+        console.log(data)
+      })
+      client.on('color', function (data) {
+        console.log([data.r, data.g, data.b])
+        // do stuff with the strip here.
+        strip.color([data.r, data.g, data.b]) // sets strip to green using rgb values
+        strip.show()
+      })
+      client.on('messages', function (data) {
+        client.emit('broad', data)
+        client.broadcast.emit('broad', data)
+      })
+    })
+  })
+})
 
-io.on('connection', function(client) {
-  console.log('Client connected...');
+app.use(express.static(path.join(__dirname, '/node_modules')))
 
-  client.on('join', function(data) {
-      console.log(data);
-  });
-  client.on('color', function(data) {
-    console.log('-----------------------------------------------');
-    console.log(data);
-    console.log('-----------------------------------------------');
-  });
+app.use(express.static(path.join(__dirname, '/dist')))
 
-  client.on('messages', function(data) {
-         client.emit('broad', data);
-         client.broadcast.emit('broad',data);
-  });
+app.get('/', function (req, res, next) {
+  res.sendFile(path.join(__dirname, '/index.html'))
+})
 
-});
-
-server.listen(4200);
+server.listen(4200)

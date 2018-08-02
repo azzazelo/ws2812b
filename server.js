@@ -7,6 +7,17 @@ const pixel = require('node-pixel')
 const five = require('johnny-five')
 const board = new five.Board()
 
+var client = io.on('connection', function (client) {
+  console.log('Client connected...')
+  client.on('join', function (data) {
+    console.log(data)
+  })
+  client.on('messages', function (msg) {
+    client.emit('broad', msg)
+    client.broadcast.emit('broad', msg)
+  })
+})
+
 board.on('ready', function () {
   let strip = new pixel.Strip({
     board: this,
@@ -17,39 +28,33 @@ board.on('ready', function () {
   let led = new five.Led(13)
 
   strip.on('ready', function () {
-    io.on('connection', function (client) {
-      console.log('Client connected...')
-      client.on('join', function (data) {
-        console.log(data)
-      })
-      client.on('color', function (data) {
-        console.log([data.r, data.g, data.b])
-        // do stuff with the strip here.
-        strip.color([data.r, data.g, data.b]) // sets strip to green using rgb values
-        strip.show()
-      })
-      client.on('messages', function (msg) {
-        console.log(msg)
-        switch (msg) {
-          case 'on':
-            strip.color('#ff0000') // turns entire strip red using a hex colour
-            strip.show()
-            break
-          case 'off':
-            strip.off()
-            break
-          case 'blink':
-            led.blink(500)
-            break
-          case 'blinkoff':
-            led.stop()
-            break
-          default:
-            break
-        }
-        client.emit('broad', msg)
-        client.broadcast.emit('broad', msg)
-      })
+    client.on('color', function (data) {
+      console.log([data.r, data.g, data.b])
+      // do stuff with the strip here.
+      strip.color([data.r, data.g, data.b]) // sets strip to green using rgb values
+      strip.show()
+    })
+    client.on('messages', function (msg) {
+      console.log(msg)
+      switch (msg) {
+        case 'on':
+          strip.color('#ff0000') // turns entire strip red using a hex colour
+          strip.show()
+          break
+        case 'off':
+          strip.off()
+          break
+        case 'blink':
+          led.blink(500)
+          break
+        case 'blinkoff':
+          led.stop()
+          break
+        default:
+          break
+      }
+      client.emit('broad', msg)
+      client.broadcast.emit('broad', msg)
     })
   })
 })

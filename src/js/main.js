@@ -2,12 +2,12 @@
 
 'use strict'
 
-var socket = io.connect()
+const socket = io.connect()
 socket.on('connect', function (data) {
   socket.emit('join', 'Hello World from client')
 })
 socket.on('broad', function (data) {
-  $('#future').append(`<li class="panel-block list-group-item">${data}</li>`)
+  $('#future').append(`<li class="panel-block list-group-item is-primary">${data}</li>`)
   if ($('#future li').length > 5) {
     $('#future li').first().remove()
   }
@@ -19,9 +19,9 @@ $('form').submit(function (e) {
   socket.emit('messages', message)
 })
 
-var demoColorPicker = new iro.ColorPicker('#color-picker-container', {
-  width: 480,
-  height: 480,
+let demoColorPicker = new iro.ColorPicker('#color-picker-container', {
+  width: 320,
+  height: 320,
   color: {r: 255, g: 0, b: 0},
   markerRadius: 8,
   padding: 4,
@@ -34,7 +34,6 @@ var demoColorPicker = new iro.ColorPicker('#color-picker-container', {
 
 demoColorPicker.on('color:change', function (color, changes) {
   $('#future').css('color', color.hexString)
-
   // Log the color's hex RGB value to the dev console
   // console.log(color.rgb);
   socket.emit('color', color.rgb)

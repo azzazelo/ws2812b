@@ -7,7 +7,7 @@ socket.on('connect', function (data) {
   socket.emit('join', 'Hello World from client')
 })
 socket.on('broad', function (data) {
-  $('#future').append(`<li class="list-group-item">${data}</li>`)
+  $('#future').append(`<li class="panel-block list-group-item">${data}</li>`)
   if ($('#future li').length > 5) {
     $('#future li').first().remove()
   }

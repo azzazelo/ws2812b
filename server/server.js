@@ -7,45 +7,57 @@ const pixel = require('node-pixel')
 const five = require('johnny-five')
 const board = new five.Board()
 
-console.log('-----------------------------------------------')
-console.log(process.platform)
-console.log('-----------------------------------------------')
+const effects = require('./effects')
 
 io.on('connection', function (client) {
   console.log('Client connected...')
 
   // Johnny-five //
   board.on('ready', function () {
-    let strip = new pixel.Strip({
+    var opts = {}
+    opts.port = process.argv[2] || ''
+    console.log('-----------------------------------------------')
+    console.log('opts: ', opts)
+    console.log('-----------------------------------------------')
+    const strip = new pixel.Strip({
       board: this,
       controller: 'FIRMATA',
-      strips: [ {pin: 6, length: 120} ], // this is preferred form for definition
-      gamma: 2.8 // set to a gamma that works nicely for WS2812
+      strips: [ {pin: 6, length: 160} ] // this is preferred form for definition
     })
     let led = new five.Led(13)
 
     strip.on('ready', function () {
+      console.log('-----------------------------------------------')
+      console.log('strip')
+      console.log('-----------------------------------------------')
       client.on('color', function (data) {
         console.log([data.r, data.g, data.b])
         // do stuff with the strip here.
         strip.color([data.r, data.g, data.b]) // sets strip to green using rgb values
         strip.show()
       })
+
       client.on('messages', function (msg) {
-        console.log(msg)
+        var isHex = /(^#[0-9A-F]{6}$)|(^#[0-9A-F]{3}$)/i.test(msg)
+        if (isHex) {
+          effects.onHex(strip, msg)
+        }
+
         switch (msg) {
-          case 'on':
-            strip.color('#ff0000') // turns entire strip red using a hex colour
-            strip.show()
-            break
           case 'off':
-            strip.off()
+            effects.off(strip)
             break
           case 'blink':
             led.blink(500)
             break
           case 'blinkoff':
             led.stop()
+            break
+          case 'test':
+            effects.testing()
+            break
+          case 'rainbow':
+            effects.rainbow(strip)
             break
           default:
             break

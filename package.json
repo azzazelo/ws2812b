@@ -8,7 +8,7 @@
     "build:watch": "npm run clean && NODE_ENV=development webpack -d --watch",
     "build:dev": "npm run clean && NODE_ENV=development webpack -d",
     "build:prod": "npm run clean && NODE_ENV=production  webpack -p",
-    "start": "npm run clean && NODE_ENV=production  webpack -p && NODE_ENV=development node server/server.js",
+    "start": "npm run clean && NODE_ENV=production  webpack -p && NODE_ENV=production node server/server.js",
     "server:prod": "NODE_ENV=production node server.js"
   },
   "author": "azzazel",

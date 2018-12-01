@@ -6,8 +6,14 @@ const io = require('socket.io')(server)
 const pixel = require('node-pixel')
 const five = require('johnny-five')
 const board = new five.Board()
-
+const os = require('os')
 const effects = require('./effects')
+
+console.log('-----------------------------------------------')
+console.log(os.platform())
+console.log(os.release())
+console.log(os.arch())
+console.log('-----------------------------------------------')
 
 io.on('connection', function (client) {
   console.log('Client connected...')
@@ -15,9 +21,10 @@ io.on('connection', function (client) {
   // Johnny-five //
   board.on('ready', function () {
     var opts = {}
+    
     opts.port = process.argv[2] || ''
     console.log('-----------------------------------------------')
-    console.log('opts: ', opts)
+    console.log(process.argv)
     console.log('-----------------------------------------------')
     const strip = new pixel.Strip({
       board: this,
@@ -28,7 +35,7 @@ io.on('connection', function (client) {
 
     strip.on('ready', function () {
       console.log('-----------------------------------------------')
-      console.log('strip')
+      console.log('Strip ready')
       console.log('-----------------------------------------------')
       client.on('color', function (data) {
         console.log([data.r, data.g, data.b])

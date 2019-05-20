@@ -9,13 +9,15 @@
     "build:dev": "npm run clean && NODE_ENV=development webpack -d",
     "build:prod": "npm run clean && NODE_ENV=production  webpack -p",
     "start": "npm run clean && NODE_ENV=production  webpack -p && node server/server.js",
-    "server:prod": "NODE_ENV=production node server.js"
+    "server:prod": "NODE_ENV=production node server.js",
+    "lint": "eslint ./ --cache --ignore-pattern .gitignore"
   },
+  "pre-commit": [ "lint" ],
   "author": "azzazel",
   "license": "ISC",
   "dependencies": {
     "@jaames/iro": "^3.4.1",
-    "bulma": "^0.7.1",
+    "bulma": "^0.7.4",
     "express": "^4.16.3",
     "johnny-five": "^0.15.0",
     "jquery": "^3.3.1",
@@ -41,6 +43,7 @@
     "extract-text-webpack-plugin": "^4.0.0-beta.0",
     "node-sass": "^4.9.3",
     "postcss-loader": "^2.1.6",
+    "pre-commit": "^1.2.2",
     "sass-loader": "^7.1.0",
     "style-loader": "^0.21.0",
     "webpack": "^4.32.0",

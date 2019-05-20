@@ -21,7 +21,6 @@ io.on('connection', function (client) {
   // Johnny-five //
   board.on('ready', function () {
     var opts = {}
-    
     opts.port = process.argv[2] || ''
     console.log('-----------------------------------------------')
     console.log(process.argv)

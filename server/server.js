@@ -28,7 +28,7 @@ io.on('connection', function (client) {
     const strip = new pixel.Strip({
       board: this,
       controller: 'FIRMATA',
-      strips: [ {pin: 6, length: 160} ] // this is preferred form for definition
+      strips: [{ pin: 6, length: 160 }] // this is preferred form for definition
     })
     let led = new five.Led(13)
 

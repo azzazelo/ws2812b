@@ -22,7 +22,7 @@ $('form').submit((e) => {
 let demoColorPicker = new iro.ColorPicker('#color-picker-container', {
   width: 320,
   height: 320,
-  color: {r: 255, g: 0, b: 0},
+  color: { r: 255, g: 0, b: 0 },
   markerRadius: 8,
   padding: 4,
   sliderMargin: 24,

@@ -26,8 +26,6 @@ function colorWheel (WheelPos) {
 }
 
 function dynamicRainbow (strip, delay) {
-  console.log('dynamicRainbow')
-
   var showColor
   var cwi = 0 // colour wheel index (current position on colour wheel)
   setInterval(function () {

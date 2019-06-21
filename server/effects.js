@@ -1,3 +1,5 @@
+import logger from '../config/winston'
+
 function testing () {
   return 'aaa'
 }
@@ -26,7 +28,7 @@ function colorWheel (WheelPos) {
 }
 
 function dynamicRainbow (strip, delay) {
-  console.log('dynamicRainbow')
+  logger.info('dynamicRainbow')
 
   var showColor
   var cwi = 0 // colour wheel index (current position on colour wheel)

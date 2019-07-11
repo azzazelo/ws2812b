@@ -1,0 +1,8 @@
+{
+  "controller": "FIRMATA",
+  "strip": {
+    "pin": 6,
+    "length": 160
+  }
+}
+

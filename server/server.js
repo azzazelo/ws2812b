@@ -6,15 +6,14 @@ import { Strip } from 'node-pixel'
 import { Board, Led } from 'johnny-five'
 import { platform, release, arch } from 'os'
 import { onHex, off, testing, rainbow } from './effects'
+import config from '../config/app'
 
 const app = express()
 const server = require('http').createServer(app)
 const io = require('socket.io')(server)
 const board = new Board()
 
-logger.info(`Platform: , ${platform()}`)
-logger.info(`Release: ${release()}`)
-logger.info(`Arch: ${arch()}`)
+logger.info(`Platform: ${platform()}, ${arch()}, ${release()}`)
 
 io.on('connection', function (client) {
   logger.info('Client connected...')
@@ -26,8 +25,8 @@ io.on('connection', function (client) {
     logger.debug(`Process.argv ${process.argv}`)
     const strip = new Strip({
       board: this,
-      controller: 'FIRMATA',
-      strips: [{ pin: 6, length: 160 }] // this is preferred form for definition
+      controller: config.controller,
+      strips: [config.strip] // this is preferred form for definition
     })
     let led = new Led(13)
 
